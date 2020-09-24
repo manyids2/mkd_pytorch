@@ -41,11 +41,11 @@ class MKD(nn.Module):
         if self.whitening is not None:
             whitening_models = np.load(self.model_file, allow_pickle=True)
             algo = 'lw' if self.whitening == 'lw' else 'pca'
-            whitening_model = whitening_models[self.training_set][algo]
-            self.whitening_layer = Whitening(self.whitening,
+            whitening_model = whitening_models[training_set][algo]
+            self.whitening_layer = Whitening(whitening,
                                              whitening_model,
-                                             reduce_dims=self.reduce_dims,
-                                             device=self.device)
+                                             reduce_dims=reduce_dims,
+                                             device=device)
 
         if dtype in ['cart', 'concat']:
             ori_abs = EmbedGradients(patch_size=patch_size,

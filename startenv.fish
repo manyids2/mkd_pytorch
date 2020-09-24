@@ -12,7 +12,7 @@ else
   set -gx LD_LIBRARY_PATH (string join ":" $LD_LIBRARY_PATH);
 end
 
-set -gx PYTHONPATH $basename/endzone/logpolar/
+set -gx PYTHONPATH $basename/endzone/mkd_pytorch/
 set -gx PYTHONPATH (string join : $basename/endzone/MKDNet/ $PYTHONPATH)
 set -gx PYTHONPATH (string join : $basename/endzone/utils/ $PYTHONPATH)
 
