@@ -1,0 +1,3 @@
+include mkd_pytorch/mkd-concat-64.pkl
+include mkd_pytorch/mkd-cart-64.pkl
+include mkd_pytorch/mkd-polar-64.pkl
