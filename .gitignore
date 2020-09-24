@@ -1,0 +1,5 @@
+dist
+build
+__pycache__
+mkd_pytorch.egg-info
+cleanup.sh
