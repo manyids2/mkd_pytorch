@@ -7,6 +7,36 @@ from .layers import Gradients, EmbedGradients, ExplicitSpacialEncoding, L2Norm, 
 
 
 class MKD(nn.Module):
+    """
+    Module, which computes Multiple kernel local descriptors of given patches.
+    Args:
+        dtype: (str) Parametrization of kernel.
+              'concat', 'polar', 'cart'('concat' is default)
+        patch_size: (int) Input patch size in pixels (32 is default)
+        whitening: (str) Whitening transform to use.
+              None, 'lw', 'pca', 'pcaws', 'pcawt'('pcawt' is default)
+        training_set: (str) Dataset from PhotoTourism on which whitening is trained.
+              'liberty', 'notredame', 'yosemite'()
+        reduce_dims: (int) Dimensionality reduction (128 is default).
+        do_l2: (bool) l2-normalize individual embeddings (True is default).
+        do_final_l2: (bool) l2-normalize final embedding (True is default).
+        do_gmask: (bool) Apply gaussian mask to centre (True is default).
+        device: (str) Torch device to use ('cpu' is default).
+    Returns:
+        Tensor: MKD descriptor of the patches.
+    Shape:
+        - Input: (B, 1, patch_size, patch_size)
+        - Output: (B, out_dim)
+    Examples::
+        >>> patches = torch.rand(23, 1, 32, 32)
+        >>> mkd = mkd_pytorch.MKD(dtype='concat',
+                                  patch_size=32,
+                                  whitening='pcawt',
+                                  training_set='liberty',
+                                  device='cpu')
+        >>> descs = mkd(patches) # 23x128
+    """
+
     def __init__(self, dtype='concat',
                  patch_size=32,
                  whitening='pcawt',

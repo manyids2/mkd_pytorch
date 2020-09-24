@@ -1,5 +1,5 @@
 dist
 build
 __pycache__
-mkd_local_descriptor.egg-info
+mkd_pytorch.egg-info
 cleanup.sh
