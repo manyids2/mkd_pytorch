@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from .layers import Gradients, EmbedGradients, ExplicitSpacialEncoding, L2Norm
+from .layers import Gradients, EmbedGradients, ExplicitSpacialEncoding, L2Norm, Whitening
 
 
 class MKD(nn.Module):
@@ -39,12 +39,13 @@ class MKD(nn.Module):
                                device=device)
 
         if self.whitening is not None:
-            # TODO: save also as torch tensors.
             whitening_models = np.load(self.model_file, allow_pickle=True)
             algo = 'lw' if self.whitening == 'lw' else 'pca'
             whitening_model = whitening_models[self.training_set][algo]
-            self.whitening_model = {k:torch.from_numpy(v.astype(np.float32)) for k,v in whitening_model.items()}
-            self.whitening_model = {k:v.to(device) for k,v in self.whitening_model.items()}
+            self.whitening_layer = Whitening(self.whitening,
+                                             whitening_model,
+                                             reduce_dims=self.reduce_dims,
+                                             device=self.device)
 
         if dtype in ['cart', 'concat']:
             ori_abs = EmbedGradients(patch_size=patch_size,
@@ -99,51 +100,10 @@ class MKD(nn.Module):
             y = self.norm(y)
 
         if self.whitening is not None:
-            y = torch_xform_data(y, self.whitening_model, xform=self.whitening, reduce_dims=self.reduce_dims)
+            y = self.whitening_layer(y)
         return y
 
     def extra_repr(self):
-        return 'idims:{}, do_l2:{}\npolar:{}, cart:{}\nuse_st:{}, do_log:{},\n polar_gmask:{}, cart_gmask:{}'.format(
-            self.idims, self.do_l2, self.polar, self.cart, self.use_st, self.do_log,
-            self.polar_gmask, self.cart_gmask)
-
-
-def torch_xform_data(data, wh_model, xform, keval=40, t=0.7, reduce_dims=128):
-
-    data_dim = data.shape[1]
-    mn = wh_model["mean"]
-    evecs = wh_model["eigvecs"]
-    evals = wh_model["eigvals"]
-
-    data = data - mn
-    evecs = evecs[:, :min(reduce_dims, data_dim)]
-    evals = evals[:min(reduce_dims, data_dim)]
-
-    pval = 1.0
-    if xform == 'pca':
-        data = data @ evecs
-        pval = 0.5
-    elif xform == 'whiten':
-        evecs = evecs @ torch.diag(torch.pow(evals, -0.5))
-        data = data @ evecs
-    elif xform == 'lw':
-        data = data @ evecs
-    elif xform == 'pcaws':
-        alpha = evals[keval]
-        evals = ((1 - alpha) * evals) + alpha
-        evecs = evecs @ torch.diag(torch.pow(evals, -0.5))
-        data = data @ evecs
-    elif xform == 'pcawt':
-        m = -0.5 * t
-        evecs = evecs @ torch.diag(torch.pow(evals, m))
-        data = data @ evecs
-    else:
-        raise KeyError('Unknown transform - %s' % xform)
-
-    # powerlaw.
-    data = torch.sign(data) * torch.pow(torch.abs(data), pval)
-
-    # l2norm
-    data = L2Norm()(data)
-
-    return data
+        return (f'dtype:{self.dtype}, patch_size:{self.patch_size}, whitening:{self.whitening},\n'
+                f'training_set:{self.training_set}, reduce_dims:{self.reduce_dims},\n'
+                f'do_l2:{self.do_l2}, do_final_l2:{self.do_final_l2}, do_gmask:{self.do_gmask}\n')

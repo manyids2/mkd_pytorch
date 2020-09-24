@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
 
-from mkd_pytorch.kernel import get_grid, VonMisesKernel, COEFFS, get_kron_order
+from .kernel import get_grid, VonMisesKernel, COEFFS, get_kron_order
 
 
 def load_fspecial_gaussian_filter(sigma):
@@ -198,3 +198,67 @@ class ExplicitSpacialEncoding(nn.Module):
 
     def extra_repr(self):
         return f'dtype:{self.dtype}, fmap_size:{self.fmap_size}, in_dims:{self.in_dims}, do_gmask:{self.do_gmask}, do_l2:{self.do_l2}, out_dims:{self.out_dims}'
+
+
+class Whitening(nn.Module):
+    def __init__(self,
+                 xform,
+                 whitening_model,
+                 reduce_dims=128,
+                 keval=40,
+                 t=0.7,
+                 device='cpu'):
+        super().__init__()
+
+        self.xform = xform
+        self.reduce_dims = reduce_dims
+        self.keval = keval
+        self.t = t
+        self.norm = L2Norm()
+
+        self.whitening_model = {k:torch.from_numpy(v.astype(np.float32)) for k,v in whitening_model.items()}
+        self.whitening_model = {k:v.to(device) for k,v in self.whitening_model.items()}
+
+    def forward(self, x):  # pylint: disable=W0221
+
+        # Center the data.
+        x = x - self.whitening_model["mean"]
+
+        # Dimensionality reduction.
+        data_dim = x.shape[1]
+        evecs = self.whitening_model["eigvecs"][:, :min(self.reduce_dims, data_dim)]
+        evals = self.whitening_model["eigvals"][:min(self.reduce_dims, data_dim)]
+
+        # Transform.
+        pval = 1.0
+        if self.xform == 'pca':
+            x = x @ evecs
+            pval = 0.5
+        elif self.xform == 'whiten':
+            evecs = evecs @ torch.diag(torch.pow(evals, -0.5))
+            x = x @ evecs
+        elif self.xform == 'lw':
+            x = x @ evecs
+        elif self.xform == 'pcaws':
+            alpha = evals[self.keval]
+            evals = ((1 - alpha) * evals) + alpha
+            evecs = evecs @ torch.diag(torch.pow(evals, -0.5))
+            x = x @ evecs
+        elif self.xform == 'pcawt':
+            m = -0.5 * self.t
+            evecs = evecs @ torch.diag(torch.pow(evals, m))
+            x = x @ evecs
+        else:
+            raise KeyError('Unknown transform - %s' % self.xform)
+
+        # powerlaw.
+        x = torch.sign(x) * torch.pow(torch.abs(x), pval)
+
+        # l2norm
+        x = self.norm(x)
+
+        return x
+
+    def extra_repr(self):
+        return f'xform:{self.xform}, reduce_dims:{self.reduce_dims}'
+
