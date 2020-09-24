@@ -48,28 +48,22 @@ class MKD(nn.Module):
 
         if dtype in ['cart', 'concat']:
             ori_abs = EmbedGradients(patch_size=patch_size,
-                                     weigh_mags=True,
                                      relative=False,
                                      device=device)
             cart_emb = ExplicitSpacialEncoding(dtype='cart',
                                                fmap_size=self.patch_size,
                                                in_dims=7,
-                                               kappa=1,
-                                               n=1,
                                                do_gmask=self.do_gmask,
                                                do_l2=self.do_l2)
             self.cart_feats = nn.Sequential(ori_abs, cart_emb)
 
         if dtype in ['polar', 'concat']:
             ori_rel = EmbedGradients(patch_size=patch_size,
-                                     weigh_mags=True,
                                      relative=True,
                                      device=device)
             polar_emb = ExplicitSpacialEncoding(dtype='polar',
                                                fmap_size=self.patch_size,
                                                in_dims=7,
-                                               kappa=8,
-                                               n=2,
                                                do_gmask=self.do_gmask,
                                                do_l2=self.do_l2)
             self.polar_feats = nn.Sequential(ori_rel, polar_emb)

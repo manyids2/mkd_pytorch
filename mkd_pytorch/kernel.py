@@ -76,28 +76,3 @@ class VonMisesKernel(nn.Module):
     def extra_repr(self):
         return f'patch_size:{self.patch_size}, n:{self.n}, d:{self.d}, coeffs:{self.coeffs}'
 
-
-def spatial_kernel_embedding(dtype, patch_size):
-    factors = {"phi": 1.0, "rho": np.pi, "x": np.pi / 2, "y": np.pi / 2}
-    if dtype == 'cart':
-        coeffs_ = 'xy'
-        params_ = ['x', 'y']
-    elif dtype == 'polar':
-        coeffs_ = 'rhophi'
-        params_ = ['phi', 'rho']
-
-    grids = get_grid(patch_size)
-    grids = {k:v * factors[k] for k,v in grids.items()}
-    grids = {k:v[np.newaxis, np.newaxis, :, :] for k,v in grids.items()}
-    grids = {k:torch.from_numpy(v.astype(np.float32)) for k,v in grids.items()}
-
-    vm_a = VonMisesKernel(COEFFS[coeffs_], patch_size=patch_size)
-    vm_b = VonMisesKernel(COEFFS[coeffs_], patch_size=patch_size)
-
-    emb_a = vm_a(grids[params_[0]]).squeeze()
-    emb_b = vm_b(grids[params_[1]]).squeeze()
-
-    kron_order = torch.from_numpy(get_kron_order(vm_a.d, vm_b.d).astype(np.int64))
-    spatial_kernel = emb_a.index_select(0, kron_order[:,0]) * emb_b.index_select(0, kron_order[:,1])
-    return spatial_kernel
-
