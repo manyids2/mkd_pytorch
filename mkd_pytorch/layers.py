@@ -17,7 +17,7 @@ def load_fspecial_gaussian_filter(sigma: float) -> np.ndarray:
     return gx.astype(np.float32)
 
 
-def gaussian_mask(rho: np.ndarray, sigma: float = 1.0) -> np.nparray:
+def gaussian_mask(rho: np.ndarray, sigma: float = 1.0) -> np.ndarray:
     """Compute gaussian mask given distance from centre (rho). """
     gmask = np.exp(-1 * rho**2 / sigma**2)
     return gmask
