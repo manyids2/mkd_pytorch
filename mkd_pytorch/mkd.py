@@ -138,7 +138,7 @@ class MKD(nn.Module):
             y = self.whitening_layer(y)
         return y
 
-    def extra_repr(self):
+    def extra_repr(self) -> str:
         return (f'dtype:{self.dtype}, patch_size:{self.patch_size}, whitening:{self.whitening},\n'
                 f'training_set:{self.training_set}, reduce_dims:{self.reduce_dims},\n'
                 f'do_l2:{self.do_l2}, do_final_l2:{self.do_final_l2}, do_gmask:{self.do_gmask}\n')
