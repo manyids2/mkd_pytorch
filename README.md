@@ -4,7 +4,7 @@ Implementation of [Understanding and Improving Kernel Local Descriptors](https:/
 Includes whitening models learned on PhotoTourism dataset, supervised and unsupervised versions.
 
 ## Installation
-`pip install https://github.com/manyids2/mkd_pytorch/archive/v1.1.1.tar.gz`
+`pip install https://github.com/manyids2/mkd_pytorch/archive/v1.1.2.tar.gz`
 
 - Tested with
   - Python 3.7.4
