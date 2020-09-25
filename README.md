@@ -124,3 +124,48 @@ Extraction times for 1024 batches on GPU (Nvidia Tesla P100).
     year={2018},
   }
 ```
+
+
+## All variants, patch_sizes
+
+```
+  -----------------------------------------------------------------------------------
+  Mean Average Precision wrt Lowe SNN ratio criterion on UBC Phototour Revisited
+  -----------------------------------------------------------------------------------
+  trained on                 liberty notredame  liberty yosemite  notredame yosemite
+  tested  on                     yosemite           notredame            liberty
+  -----------------------------------------------------------------------------------
+  mkd_pytorch-cart-None-32        40.27              37.64               38.46
+  mkd_pytorch-cart-lw-32      51.13  51.04        45.28  44.68        45.43  45.14
+  mkd_pytorch-cart-pca-32     44.72  44.35        40.53  40.22        41.50  41.28
+  mkd_pytorch-cart-pcaws-32   48.95  48.72        43.80  43.35        43.94  43.93
+  mkd_pytorch-cart-pcawt-32   49.38  49.02        43.90  43.33        43.92  43.85
+  mkd_pytorch-polar-None-32       61.49              52.98               51.56
+  mkd_pytorch-polar-lw-32     73.20  73.12        62.67  61.34        63.07  62.00
+  mkd_pytorch-polar-pca-32    66.25  65.98        56.59  55.57        55.54  55.03
+  mkd_pytorch-polar-pcws-32   67.69  67.20        57.94  56.82        56.37  56.00
+  mkd_pytorch-polar-pcwt-32   69.53  69.06        58.81  57.39        57.65  56.91
+  mkd_pytorch-concat-None-32      57.86              49.93               48.78
+  mkd_pytorch-concat-lw-32    72.29  71.98        60.90  58.81        60.71  59.13
+  mkd_pytorch-concat-pca-32   64.46  64.32        54.82  53.87        54.13  53.62
+  mkd_pytorch-concat-pcws-32  66.59  66.05        56.43  55.21        55.22  54.78
+  mkd_pytorch-concat-pcwt-32  68.05  67.61        57.22  55.76        56.27  55.50
+
+  mkd_pytorch-cart-None-64        38.93              36.71               37.62
+  mkd_pytorch-cart-lw-64      51.61  51.44        45.67  44.97        45.74  45.40
+  mkd_pytorch-cart-pca-64     44.61  44.26        40.46  40.12        41.50  41.31
+  mkd_pytorch-cart-pcws-64    49.49  49.15        44.12  43.56        44.34  44.28
+  mkd_pytorch-cart-pcwt-64    49.60  49.20        43.95  43.34        44.07  43.96
+  mkd_pytorch-polar-None-64      61.57              52.93               51.45
+  mkd_pytorch-polar-lw-64     73.95  73.97        63.59  62.13        64.05  62.87
+  mkd_pytorch-polar-pca-64    67.37  67.09        57.45  56.46        56.48  56.01
+  mkd_pytorch-polar-pcws-64   68.80  68.28        58.77  57.54        57.30  56.84
+  mkd_pytorch-polar-pcwt-64   70.91  70.39        59.97  58.39        58.86  58.03
+  mkd_pytorch-concat-None-64     57.48              49.49               48.29
+  mkd_pytorch-concat-lw-64    73.36  73.15        61.90  59.95        61.94  60.35
+  mkd_pytorch-concat-pca-64   65.58  65.36        55.53  54.60        55.03  54.46
+  mkd_pytorch-concat-pcws-64  67.74  67.16        57.14  55.80        56.13  55.63
+  mkd_pytorch-concat-pcwt-64  69.44  68.96        58.19  56.59        57.41  56.55
+  ----------------------------------------------------------------------------------
+```
+
