@@ -86,7 +86,47 @@ Evaluated on the [brown_phototour_revisited benchmark](https://github.com/ducha-
   ------------------------------------------------------------------------------
 ```
 
-- All variants, patch_sizes
+## Extraction times
+
+Extraction times for 1024 batches on GPU (Nvidia Tesla P100).
+
+|patch_size|batch_size| time(seconds)| ms per patch
+|:--------:|:--------:|:------------:|:-----------:
+|    64    | 64       |  8.96        | 13.67e-2
+|    64    | 128      | 10.50        |  8.01e-2
+|    64    | 256      | 19.15        |  7.30e-2
+|    64    | 512      | 36.98        |  7.05e-2
+|    64    | 1024     | 72.81        |  6.94e-2
+
+|patch_size|batch_size| time(seconds)| ms per patch
+|:--------:|:--------:|:------------:|:---------:
+|    32    | 64       |  5.93        |  9.04e-2
+|    32    | 128      |  4.21        |  3.21e-2
+|    32    | 256      |  5.67        |  2.16e-2
+|    32    | 512      |  9.12        |  1.73e-2
+|    32    | 1024     | 17.26        |  1.64e-2
+
+## Bibliography
+
+  Please cite :
+```
+  @article{mukundan2017multiple,
+    title={Multiple-kernel local-patch descriptor},
+    author={Mukundan, Arun and Tolias, Giorgos and Chum, Ond{\v{r}}ej},
+    journal={arXiv preprint arXiv:1707.07825},
+    year={2017}
+  }
+
+  @article{mukundan2018understanding,
+    title={Understanding and improving kernel local descriptors},
+    author={Mukundan, Arun and Tolias, Giorgos and Bursuc, Andrei and J{\'e}gou, Herv{\'e} and Chum, Ond{\v{r}}ej},
+    journal={International Journal of Computer Vision},
+    year={2018},
+  }
+```
+
+
+## All variants, patch_sizes
 
 ```
   -----------------------------------------------------------------------------------
@@ -129,41 +169,3 @@ Evaluated on the [brown_phototour_revisited benchmark](https://github.com/ducha-
   ----------------------------------------------------------------------------------
 ```
 
-## Extraction times
-
-Extraction times for 1024 batches on GPU (Nvidia Tesla P100).
-
-|patch_size|batch_size| time(seconds)| ms per patch
-|:--------:|:--------:|:------------:|:-----------:
-|    64    | 64       |  8.96        | 13.67e-2
-|    64    | 128      | 10.50        |  8.01e-2
-|    64    | 256      | 19.15        |  7.30e-2
-|    64    | 512      | 36.98        |  7.05e-2
-|    64    | 1024     | 72.81        |  6.94e-2
-
-|patch_size|batch_size| time(seconds)| ms per patch
-|:--------:|:--------:|:------------:|:---------:
-|    32    | 64       |  5.93        |  9.04e-2
-|    32    | 128      |  4.21        |  3.21e-2
-|    32    | 256      |  5.67        |  2.16e-2
-|    32    | 512      |  9.12        |  1.73e-2
-|    32    | 1024     | 17.26        |  1.64e-2
-
-## Bibliography
-
-  Please cite :
-```
-  @article{mukundan2017multiple,
-    title={Multiple-kernel local-patch descriptor},
-    author={Mukundan, Arun and Tolias, Giorgos and Chum, Ond{\v{r}}ej},
-    journal={arXiv preprint arXiv:1707.07825},
-    year={2017}
-  }
-
-  @article{mukundan2018understanding,
-    title={Understanding and improving kernel local descriptors},
-    author={Mukundan, Arun and Tolias, Giorgos and Bursuc, Andrei and J{\'e}gou, Herv{\'e} and Chum, Ond{\v{r}}ej},
-    journal={International Journal of Computer Vision},
-    year={2018},
-  }
-```
