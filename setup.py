@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mkd_pytorch",
-    version="1.0.0",
+    version="1.1.0",
     author="Arun Mukundan",
     author_email="arun.mukundan@gmail.com",
     description="Multiple kernel local descriptors.",
