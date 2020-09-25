@@ -37,7 +37,8 @@ class MKD(nn.Module):
         >>> descs = mkd(patches) # 23x128
     """
 
-    def __init__(self, dtype='concat',
+    def __init__(self,
+                 dtype='concat',
                  patch_size=32,
                  whitening='pcawt',
                  training_set='liberty',
