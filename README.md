@@ -126,7 +126,7 @@ Extraction times for 1024 batches on GPU (Nvidia Tesla P100).
 ```
 
 
-## All variants, patch_sizes
+## Testing all variants, patch_sizes
 
 ```
   -----------------------------------------------------------------------------------
