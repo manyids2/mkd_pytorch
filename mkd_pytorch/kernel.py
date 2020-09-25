@@ -1,4 +1,4 @@
-from typing import Tuple, Dict
+from typing import Tuple
 import numpy as np
 
 
@@ -23,7 +23,7 @@ def pol2cart(rho: np.ndarray, phi: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     return x, y
 
 
-def get_grid(patch_size:int) -> Dict:
+def get_grid(patch_size:int) -> dict:
     """Gets cartesian and polar parametrizations for all positions on the patch. """
     x, y = [np.arange(-1 * (patch_size - 1), patch_size, 2, dtype=np.float32)] * 2
     xx, yy = np.meshgrid(x, y)

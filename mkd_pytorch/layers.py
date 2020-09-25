@@ -194,9 +194,9 @@ class EmbedGradients(nn.Module):
     """
 
     def __init__(self,
-                 patch_size=32,
-                 relative=False,
-                 device='cpu'):
+                 patch_size: int = 32,
+                 relative: bool = False,
+                 device: str = 'cpu') -> None:
         super().__init__()
         self.patch_size = patch_size
         self.relative = relative
@@ -211,6 +211,7 @@ class EmbedGradients(nn.Module):
             self.phi = torch.Tensor(grids['phi']).to(device)
 
     def emb_mags(self, mags: torch.Tensor) -> torch.Tensor:
+        """Embed square roots of magnitudes with eps for numerical reasons. """
         mags = torch.sqrt(mags + self.eps)
         return mags
 
@@ -224,7 +225,7 @@ class EmbedGradients(nn.Module):
         y = self.kernel(oris) * self.emb_mags(mags)
         return y
 
-    def extra_repr(self):
+    def extra_repr(self) -> str:
         return f'patch_size:{self.patch_size}, relative={self.relative}, coeffs={self.kernel.coeffs}'
 
 
