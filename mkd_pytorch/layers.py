@@ -229,7 +229,7 @@ class EmbedGradients(nn.Module):
         return f'patch_size:{self.patch_size}, relative={self.relative}, coeffs={self.kernel.coeffs}'
 
 
-def spatial_kernel_embedding(dtype, patch_size: int) -> torch.Tensor:
+def spatial_kernel_embedding(dtype, grids: dict) -> torch.Tensor:
     """Compute embeddings for hardcoded cartesian and polar parametrizations. """
     factors = {"phi": 1.0, "rho": np.pi, "x": np.pi / 2, "y": np.pi / 2}
     if dtype == 'cart':
@@ -239,7 +239,9 @@ def spatial_kernel_embedding(dtype, patch_size: int) -> torch.Tensor:
         coeffs_ = 'rhophi'
         params_ = ['phi', 'rho']
 
-    grids = get_grid(patch_size)
+    keys = list(grids.keys())
+    patch_size = grids[keys[0]].shape[-1]
+
     grids_normed = {k:v * factors[k] for k,v in grids.items()}
     grids_normed = {k:v[np.newaxis, np.newaxis, :, :] for k,v in grids_normed.items()}
     grids_normed = {k:torch.from_numpy(v.astype(np.float32)) for k,v in grids_normed.items()}
@@ -296,9 +298,9 @@ class ExplicitSpacialEncoding(nn.Module):
         self.gmask = None
 
         if self.dtype == 'cart':
-            emb = spatial_kernel_embedding('cart', self.fmap_size)
+            emb = spatial_kernel_embedding('cart', self.grid)
         elif self.dtype == 'polar':
-            emb = spatial_kernel_embedding('polar', self.fmap_size)
+            emb = spatial_kernel_embedding('polar', self.grid)
         else:
             raise NotImplementedError(f'{self.dtype} is not implemented.')
 
