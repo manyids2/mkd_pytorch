@@ -1,5 +1,7 @@
 dist
 build
+tests
 __pycache__
 mkd_pytorch.egg-info
 cleanup.sh
+startenv.fish

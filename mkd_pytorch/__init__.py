@@ -1,4 +1,5 @@
 from .mkd import MKD
+from .mkdnet import MKDNet
 from .layers import L2Norm, VonMisesKernel, Gradients, EmbedGradients, ExplicitSpacialEncoding
 from .kernel import COEFFS, get_grid, get_kron_order
 

@@ -28,11 +28,11 @@ class MKDNet(nn.Module):
         elif self.arch == 'cart':
             self.fcn = FCN()
             self.encoding = ExplicitSpacialEncoding(dtype='cart', fmap_size=self.fmap_size)
-            self.fc = nn.Sequential(self.encoding, DimensionalityReductionBN(self.encoding.mid_dims, self.encoding.out_dims))
+            self.fc = nn.Sequential(self.encoding, DimensionalityReductionBN(self.encoding.out_dims, 128))
         elif self.arch == 'polar':
             self.fcn = FCN()
             self.encoding = ExplicitSpacialEncoding(dtype='polar', fmap_size=self.fmap_size)
-            self.fc = nn.Sequential(self.encoding, DimensionalityReductionBN(self.encoding.mid_dims, self.encoding.out_dims))
+            self.fc = nn.Sequential(self.encoding, DimensionalityReductionBN(self.encoding.out_dims, 128))
         else:
             raise NotImplementedError(f'{self.arch} not implemented.')
 
