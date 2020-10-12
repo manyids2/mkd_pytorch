@@ -334,8 +334,8 @@ class ExplicitSpacialEncoding(nn.Module):
         return output
 
     def extra_repr(self) -> str:
-        return (f'dtype:{self.dtype}, fmap_size:{self.fmap_size} \n',
-                f'in_dims:{self.in_dims}, out_dims:{self.out_dims} \n, '
+        return (f'dtype:{self.dtype}, fmap_size:{self.fmap_size}, \n'
+                f'in_dims:{self.in_dims}, out_dims:{self.out_dims}, \n'
                 f'do_gmask:{self.do_gmask}, do_l2:{self.do_l2}')
 
 
