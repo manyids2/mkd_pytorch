@@ -1,5 +1,9 @@
 # Multiple Kernel Local Descriptor
 
+**This descriptor will be part of kornia. This repository is mainly for the whitening models learned on Phototourism dataset.
+Please use https://github.com/manyids2/mkd_local_descriptor as the reference implementation. **
+
+
 Implementation of [Understanding and Improving Kernel Local Descriptors](https://arxiv.org/abs/1811.11147) using PyTorch.
 Includes whitening models learned on PhotoTourism dataset, supervised and unsupervised versions.
 
